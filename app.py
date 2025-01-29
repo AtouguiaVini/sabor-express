@@ -1,6 +1,8 @@
 import os
 
-restaurantes = []
+restaurantes = [{'nome':'Praça', 'categoria':'Petiscaria','ativo':False},
+                {'nome':'Pizza Suprema','categoria':'Italiana','ativo':True},
+                {'nome':'SushiBar','categoria':'Japonesa','ativo':False}]
 
 # Cadastro de restaurantes com menu
 def exibir_nome_do_programa():
@@ -41,7 +43,9 @@ def cadastrar_novo_restaurante():
     exibir_subtitulo('Cadastro de novo restaurante')
 
     nome_do_restaurante = input('Digite o nome do Restaurante: ')
-    restaurantes.append(nome_do_restaurante)
+    categoria_do_restaurante = input(f'Digite o nome da categoria do restaurante {nome_do_restaurante}: ')
+    dados_do_restaurante = {'nome':nome_do_restaurante, 'categoria':categoria_do_restaurante, 'ativo':False}
+    restaurantes.append(dados_do_restaurante)
     print(f'O restaurante {nome_do_restaurante} foi cadastrado com sucesso!\n')
 
     voltar_menu_principal()
@@ -53,7 +57,26 @@ def listar_restaurantes():
     exibir_subtitulo('Lista de restaurantes')
 
     for restaurante in restaurantes:
-        print(f'. {restaurante}')
+        nome_restaurante = restaurante['nome']
+        categoria_restaurante = restaurante['categoria']
+        ativo_restaurante = restaurante['ativo']
+        print(f'-> Nome: {nome_restaurante} | Categoria: {categoria_restaurante} | Ativo: {ativo_restaurante}')
+    voltar_menu_principal()
+
+def alternar_estado_restaurante():
+    exibir_subtitulo('Alternando estado do restaurante')
+    nome_restaurante = input('Digite o nome do restaurante que deseja alternar o estado: ')
+    restaurante_encontrado = False
+
+    for restaurante in restaurantes:
+        if nome_restaurante == restaurante['nome']:
+            restaurante_encontrado = True
+            restaurante['ativo'] = not restaurante['ativo']
+            mensagem = f'O restaurante {nome_restaurante} foi ativado com sucesso' if restaurante['ativo'] else f'O restaurante {nome_restaurante} foi desativado com sucesso'
+            print(mensagem)
+
+    if not restaurante_encontrado:
+        print('O restaurante não foi encontrado')
 
     voltar_menu_principal()
 
@@ -68,7 +91,7 @@ def escolher_opcao():
             listar_restaurantes()
             
         elif opcao_escolhida == 3:
-            print('Ativar Restaurante')
+            alternar_estado_restaurante()
         elif opcao_escolhida == 4:
             finalizar_app()
         else:
@@ -83,4 +106,4 @@ def main():
     escolher_opcao()
 
 if __name__ =='__main__':
-    main()
+    main() 
